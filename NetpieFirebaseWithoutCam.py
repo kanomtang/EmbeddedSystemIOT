@@ -61,8 +61,10 @@ def RetreiveData():
 
 
 def ActivateCamera():
-    #getFromScan = 'Kitkat:P4:8/11/2018:3'
+    # getFromScan = 'Kitkat:P4:8/11/2018:3'
+    # add new/remove product
     getFromScan = 'Coke:P4:8/11/2018:3'
+
     splitString = getFromScan.split(":")
     checkProductName = splitString[0]
     checkExpirydate = splitString[2]
@@ -70,7 +72,7 @@ def ActivateCamera():
     # data = {"name": getFromScan}
     data = {'price': 30, 'Code': splitString[3], 'name': splitString[0], 'expiryDate': splitString[2]}
     checkDuplicate = False
-    counter = 0
+    counterOuter = 0
     """"""
     # 1.1
     for i in itemlist:
@@ -86,20 +88,75 @@ def ActivateCamera():
                 print i['Code'] + ' is the old item code'
                 i['Code'] += ',' + itemCode
                 print i['Code'] + ' is the new item code' """
+                print i['Code']
+                CodeString = json.dumps(i['Code'])
+                cleanCodeString = CodeString.replace('"', '')
+                listOfCode = cleanCodeString.split(',')
 
-                # 4.1 itemCode(itemID) is duplicate
-                if i['Code'] == itemCode:
+                for itemID in listOfCode:
+                    counterInner = 0
+                    print 'U r in the new for loop'
+                    # 4.1 itemCode(itemID) is duplicate
+                    print 'itemID is ' + itemID
+                    print 'itemCode is ' + itemCode
+                    if itemID == itemCode:
 
-                    # 5.1 array of Code is equal 1
-                    if len(i['Code']) == 1:
-                        # remove statement
-                        print 'remove'
-                    # 5.2 array of Code is greater than 1
-                    else:
-                        # delete item code from dict and update
-                        # update statement
-                        print 'update'
+                        # 5.1 array of Code is equal 1
+                        if len(listOfCode) == 1:
+                            # remove statement
 
+                            print 'U are in the code is duplicate condition'
+
+                            checkDuplicate = True
+                            removeItemKey = itemlist_key[counterOuter]
+                            print removeItemKey
+                            forRemoveDupCode = firebase.ref('CustomerInfo/-KqsdeuVyyatxKELuMs4/Item')
+                            forRemoveDupCode.child(removeItemKey).delete()
+                            # ref.child(removeItemKey).delete()
+                            itemlist.pop(counterOuter)
+                            itemlist_key.pop(counterOuter)
+                            #
+                            """   
+                                    #
+                            """
+                            print ("Successful for removing item" + getFromScan)
+
+                            time.sleep(5)
+                            break
+                        # 5.2 array of Code is greater than 1
+                        else:
+                            # delete item code from dict and update
+                            # update statement
+
+                            print 'Code  duplicate but length is greater than 1 condition'
+
+                            checkDuplicate = True
+                            removeItemKey = itemlist_key[counterOuter]
+                            print removeItemKey
+
+                            # for update duplicate product name and expirydate but itemCode(itemID)
+
+                            # i['Code'] += ',' + itemCode
+
+
+                            del listOfCode[counterInner]
+                            newCode = json.dumps(listOfCode)
+                            newCode1 =  newCode.replace('"', '')
+                            newCode2 = newCode1.replace('/','')
+                            newCode3 = newCode2.replace('[','')
+                            newCode4 = newCode3.replace(']', '')
+                            newCode5 = newCode4.replace(' ','')
+                            forRemoveExCode = firebase.ref('CustomerInfo/-KqsdeuVyyatxKELuMs4/Item')
+                            forRemoveExCode.child(removeItemKey).child('Code').set(newCode5)
+
+                            """   
+                                    #
+                            """
+                            print ("Successful for removing item Code")
+
+                            time.sleep(5)
+                            break
+                    counterInner += 1
                 # 4.2 itemCode(itemID) is not duplicate
                 else:
                     # update statement with append new itemCode into existing dict
@@ -109,7 +166,7 @@ def ActivateCamera():
             else:
                 # add statement
                 print 'adsf'
-        counter += 1
+        counterOuter += 1
 
     # 1.2 if checkDuplicate == false it will add the new one
     if checkDuplicate == False:
