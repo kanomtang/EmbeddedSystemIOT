@@ -63,7 +63,7 @@ def RetreiveData():
 def ActivateCamera():
     # getFromScan = 'Kitkat:P4:8/11/2018:3'
     # add new/remove product
-    getFromScan = 'Coke:P4:8/11/2018:3'
+    getFromScan = 'Coke:P4:8/10/2018:6'
 
     splitString = getFromScan.split(":")
     checkProductName = splitString[0]
@@ -141,11 +141,11 @@ def ActivateCamera():
 
                             del listOfCode[counterInner]
                             newCode = json.dumps(listOfCode)
-                            newCode1 =  newCode.replace('"', '')
-                            newCode2 = newCode1.replace('/','')
-                            newCode3 = newCode2.replace('[','')
+                            newCode1 = newCode.replace('"', '')
+                            newCode2 = newCode1.replace('/', '')
+                            newCode3 = newCode2.replace('[', '')
                             newCode4 = newCode3.replace(']', '')
-                            newCode5 = newCode4.replace(' ','')
+                            newCode5 = newCode4.replace(' ', '')
                             forRemoveExCode = firebase.ref('CustomerInfo/-KqsdeuVyyatxKELuMs4/Item')
                             forRemoveExCode.child(removeItemKey).child('Code').set(newCode5)
 
@@ -161,11 +161,33 @@ def ActivateCamera():
                 else:
                     # update statement with append new itemCode into existing dict
                     print 'update'
+                    checkDuplicate = True
+                    removeItemKey = itemlist_key[counterOuter]
+                    listOfCode.append(itemCode)
+                    newCode = json.dumps(listOfCode)
+                    newCode1 = newCode.replace('"', '')
+                    newCode2 = newCode1.replace('/', '')
+                    newCode3 = newCode2.replace('[', '')
+                    newCode4 = newCode3.replace(']', '')
+                    newCode5 = newCode4.replace(' ', '')
+                    forupdateNewCode = firebase.ref('CustomerInfo/-KqsdeuVyyatxKELuMs4/Item')
+                    forupdateNewCode.child(removeItemKey).child('Code').set(newCode5)
+
 
             # 3.2 expiry date is not duplicate
             else:
                 # add statement
-                print 'adsf'
+
+                foraddnewDate = firebase.ref('CustomerInfo/-KqsdeuVyyatxKELuMs4/Item')
+
+                NewItemKey = foraddnewDate.push(data)
+                print("Successful for adding new date")
+                abcd = json.dumps(NewItemKey.values())
+                pkpk = re.sub('[^a-zA-Z_0-9-]+', '', abcd)
+                itemlist.append(data)
+                itemlist_key.append(pkpk)
+                time.sleep(5)
+                break
         counterOuter += 1
 
     # 1.2 if checkDuplicate == false it will add the new one
