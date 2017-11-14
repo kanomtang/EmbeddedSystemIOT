@@ -98,9 +98,9 @@ def ActivateCamera():
                         CodeString = json.dumps(i['Code'])
                         cleanCodeString = CodeString.replace('"', '')
                         listOfCode = cleanCodeString.split(',')
-
+                        counterInner = 0
                         for itemID in listOfCode:
-                            counterInner = 0
+                            
                             print 'U r in the new for loop'
                             # 4.1 itemCode(itemID) is duplicate
                             print 'itemID is ' + itemID
