@@ -28,18 +28,37 @@ itemRef = ref.child('-KqsdeuVyyatxKELuMs4').child('Item').get()
 
 def RetreiveData():
 
-    # create list for receive two sub lists
+    # Get the contents from the reference
+
+    # itemRef = ref.child('-KqsdeuVyyatxKELuMs4').child('Item').get()
+    """"""
+    # add only values inside itemlist
     a = []
     b = []
+    # [a.append(p.values()) for p in itemRef.values()]
 
-    # add only values inside itemlist
-    [a.append(p.values()) for p in itemRef.values()]
+    for i in itemRef.values():
+        # arrayString = i.split(",")
+        # print json.dumps(i)
+        # a.append(json.dumps(i))
+        a.append(i)
+        """
+        if i =={'price': 30, 'name': 'Pepsi'}:
+            print 'same'
+    a.append({'price': 170, 'name': 'Pocky'})"""
 
     # add only keys inside itemlist_key
     [b.append(p) for p in itemRef.keys()]
 
+    """
+    for i in itemlist_key:
+        print i
 
-    return  a,b
+    for i in itemlist:
+        print i.name
+        print i.price
+    """
+    return a, b
 
 
 def ActivateCamera():
