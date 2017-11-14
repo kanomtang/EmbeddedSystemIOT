@@ -147,7 +147,7 @@ def ActivateCamera():
                                     print ("Successful for removing item" + getFromScan)
                                     microgear.chat("outdoor/temp", json.dumps(itemlist))
                                     time.sleep(5)
-                                    break
+                                    return True
                                 # 5.2 array of Code is greater than 1
                                 else:
                                     # delete item code from dict and update
@@ -173,6 +173,11 @@ def ActivateCamera():
                                     newCode5 = newCode4.replace(' ', '')
                                     forRemoveExCode = firebase.ref('CustomerInfo/-KqsdeuVyyatxKELuMs4/Item')
                                     forRemoveExCode.child(removeItemKey).child('Code').set(newCode5)
+                                    newListCode=''
+                                    for i in listOfCode:
+                                        newListCode+=i
+
+                                    i['Code'] = newListCode
 
                                     """   
                                             #
@@ -180,7 +185,7 @@ def ActivateCamera():
                                     print ("Successful for removing item Code")
                                     microgear.chat("outdoor/temp", json.dumps(itemlist))
                                     time.sleep(5)
-                                    break
+                                    return True
                             counterInner += 1
                         # 4.2 itemCode(itemID) is not duplicate
                         else:
@@ -197,9 +202,14 @@ def ActivateCamera():
                             newCode5 = newCode4.replace(' ', '')
                             forupdateNewCode = firebase.ref('CustomerInfo/-KqsdeuVyyatxKELuMs4/Item')
                             forupdateNewCode.child(removeItemKey).child('Code').set(newCode5)
+                            newListCode=''
+                            for i in listOfCode:
+                                newListCode+=i
+
+                            i['Code'] = newListCode
                             microgear.chat("outdoor/temp", json.dumps(itemlist))
                             time.sleep(5)
-                            break
+                            return True
 
 
                     # 3.2 expiry date is not duplicate
@@ -216,7 +226,7 @@ def ActivateCamera():
                         itemlist_key.append(pkpk)
                         microgear.chat("outdoor/temp", json.dumps(itemlist))
                         time.sleep(5)
-                        break
+                        return True
                 counterOuter += 1
 
             # 1.2 if checkDuplicate == false it will add the new one
@@ -237,7 +247,7 @@ def ActivateCamera():
                 print data
                 print pkpk"""
                 time.sleep(5)
-                break
+                return True
 
         #cv.ShowImage("ISR Scanner", img)
 
@@ -269,9 +279,6 @@ if __name__ == "__main__":
     if (microgear.connected):
         itemlist, itemlist_key = RetreiveData()
 
-        # print type(itemlist)
-        # microgear.chat("outdoor/temp", '{"name":"Pocky"}')
-        # microgear.chat("outdoor/temp", json.dumps(itemlist))
-        # print ("sud song leaw na")""""""
+        
         while True:
             ActivateCamera()
