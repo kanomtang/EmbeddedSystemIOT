@@ -108,7 +108,7 @@ def ActivateCamera():
             checkExpirydate = splitString[2]
             itemCode = splitString[3]
             
-            data = {'price': 30 , 'Code': splitString[3], 'name': splitString[0], 'expiryDate': splitString[2], 'Checkin': str(datetime.now())}
+            data = {'price': splitString[1] , 'Code': splitString[3], 'name': splitString[0], 'expiryDate': splitString[2], 'Checkin': str(datetime.now())}
             checkDuplicate = False
             counterOuter = 0
             """"""
@@ -148,7 +148,7 @@ def ActivateCamera():
                                     forRemoveDupCode.child(removeItemKey).delete()
 
                                     # create new data
-                                    checkoutData = data = {'price': 30, 'Code': itemCode, 'name': checkProductName,
+                                    checkoutData = data = {'price': splitString[1], 'Code': itemCode, 'name': checkProductName,
                                                            'expiryDate': checkExpirydate,
                                                            'Checkin': list_of_Checkin[counterInner],
                                                            'Checkout': str(datetime.now())}
@@ -185,7 +185,7 @@ def ActivateCamera():
                                     i['Code'] = UpdateNewValuesDictKey(list_of_ItemCode)
 
                                     # create new data
-                                    checkoutData = data = {'price': 30, 'Code': itemCode, 'name': checkProductName,
+                                    checkoutData = data = {'price': splitString[1], 'Code': itemCode, 'name': checkProductName,
                                                            'expiryDate': checkExpirydate, 'Checkin': list_of_Checkin[counterInner],
                                                            'Checkout': str(datetime.now())}
                                     # update check in
