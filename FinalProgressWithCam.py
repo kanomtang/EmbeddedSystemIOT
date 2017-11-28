@@ -273,7 +273,7 @@ def ActivateCamera():
 
                 microgear.chat("outdoor/temp", json.dumps(itemlist))
                 time.sleep(5)
-                break;
+                
 
         #cv.ShowImage("ISR Scanner", img)
 
