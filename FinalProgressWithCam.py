@@ -151,7 +151,8 @@ def ActivateCamera():
                                     checkoutData = data = {'price': splitString[1], 'Code': itemCode, 'name': checkProductName,
                                                            'expiryDate': checkExpirydate,
                                                            'Checkin': list_of_Checkin[counterInner],
-                                                           'Checkout': str(datetime.now())}
+                                                           'Checkout': str(datetime.now()),
+                                                           'Province' : 'Chiang Mai'}
                                     # add to usage database
                                     usageItem = firebase.ref('Usage')
                                     usageItem.push(checkoutData)
@@ -187,7 +188,8 @@ def ActivateCamera():
                                     # create new data
                                     checkoutData = data = {'price': splitString[1], 'Code': itemCode, 'name': checkProductName,
                                                            'expiryDate': checkExpirydate, 'Checkin': list_of_Checkin[counterInner],
-                                                           'Checkout': str(datetime.now())}
+                                                           'Checkout': str(datetime.now()),
+                                                           'Province' : 'Chiang Mai'}
                                     # update check in
                                     list_of_Checkin.pop(counterInner)
                                     updateCheckinValues = ReplaceValuesInDict(json.dumps(list_of_Checkin))

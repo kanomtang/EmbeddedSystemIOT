@@ -32,6 +32,7 @@ def RetreiveData():
     # add only values inside itemlist
     a = []
     b = []
+  
     # [a.append(p.values()) for p in itemRef.values()]
 
     for i in itemRef.values():
@@ -45,6 +46,7 @@ def RetreiveData():
     # add only keys inside itemlist_key
     [b.append(p) for p in itemRef.keys()]
 
+    
     """
    for i in itemlist_key:
         print i
@@ -141,7 +143,8 @@ def ActivateCamera():
                             checkoutData = data = {'price': 30, 'Code': itemCode, 'name': checkProductName,
                                                    'expiryDate': checkExpirydate,
                                                    'Checkin': list_of_Checkin[counterInner],
-                                                   'Checkout': str(datetime.now())}
+                                                   'Checkout': str(datetime.now()),
+                                                   'Province' : 'Chiang Mai'}
                             # add to usage database
                             usageItem = firebase.ref('Usage')
                             usageItem.push(checkoutData)
@@ -180,7 +183,8 @@ def ActivateCamera():
                             # create new data
                             checkoutData = data = {'price': 30, 'Code': itemCode, 'name': checkProductName,
                                                    'expiryDate': checkExpirydate, 'Checkin': list_of_Checkin[counterInner],
-                                                   'Checkout': str(datetime.now())}
+                                                   'Checkout': str(datetime.now()),
+                                                   'Province' : 'Chiang Mai'}
                             # update check in
                             list_of_Checkin.pop(counterInner)
                             updateCheckinValues = ReplaceValuesInDict(json.dumps(list_of_Checkin))
@@ -267,7 +271,7 @@ def ActivateCamera():
 
         microgear.chat("outdoor/temp", json.dumps(itemlist))
         time.sleep(5)
-
+        
 
 def connection():
     logging.info("Now I am connected with netpie")
@@ -289,13 +293,7 @@ if __name__ == "__main__":
     microgear.subscribe("/mails")
     microgear.connect(False)
 
-    # if (microgear.connected):
-    #     itemlist, itemlist_key = RetreiveData()
-
-    # print type(itemlist)
-    # microgear.chat("outdoor/temp", '{"name":"Pocky"}')
-    # microgear.chat("outdoor/temp", json.dumps(itemlist))
-    # print ("sud song leaw na")""""""
+    
     if (microgear.connected):
         itemlist, itemlist_key = RetreiveData()
         microgear.chat("outdoor/temp", json.dumps(itemlist))
