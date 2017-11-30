@@ -1,4 +1,3 @@
-
 import microgear.client as microgear
 import logging
 
@@ -7,68 +6,63 @@ import time
 import json
 import re
 
-from datetime import  datetime
+from datetime import datetime
+
 firebase = Firebase('https://iotapplication-7cf10.firebaseio.com/')
 
 ref = firebase.ref('CustomerInfo')
-
+ref1 = firebase.ref('CustomerInfo')
 itemlist = []
 
 itemlist_key = []
-
+CustomerAddress = ''
 appid = 'SmartFridge'
 gearkey = 'YpZmMdcaemYKQLb'
 gearsecret = 'I10EsM0ZTaI4PbDVHAWm3j96G'
 
 microgear.create(gearkey, gearsecret, appid, {'debugmode': True})
 itemRef = ref.child('-KqsdeuVyyatxKELuMs4').child('Item').get()
+InfoRef = ref1.child('-KqsdeuVyyatxKELuMs4').get()
 
 
 def RetreiveData():
     # Get the contents from the reference
 
-    # itemRef = ref.child('-KqsdeuVyyatxKELuMs4').child('Item').get()
-    """"""
-    # add only values inside itemlist
     a = []
     b = []
-  
-    # [a.append(p.values()) for p in itemRef.values()]
+    c = []
+    CustomerInfo = ''
+    # extract customer info city and province
+    for i in InfoRef.values():
 
+        c.append(i)
+        # 0 = last name
+        # 1 = item list
+        # 2 = province
+        # 3 = first name
+        # 4 = City
+
+    CustomerInfo = c[4] + ',' + c[2]
+    print CustomerInfo
     for i in itemRef.values():
         # arrayString = i.split(",")
         # print json.dumps(i)
         # a.append(json.dumps(i))
         a.append(i)
-        """
-       """
+
 
     # add only keys inside itemlist_key
     [b.append(p) for p in itemRef.keys()]
 
-    
-    """
-   for i in itemlist_key:
-        print i
 
-    for i in a:
-        print i['Code']
+    return a, b, CustomerInfo
 
-         for i in a:
-
-        for c in i['Code']:
-            print c
-    """
-
-
-
-    return a, b
 
 def CreateArrayOfKeyDict(dictparam):
-
-    cleanString = dictparam.replace('"','')
+    cleanString = dictparam.replace('"', '')
     listOfValues = cleanString.split(',')
-    return  listOfValues
+    return listOfValues
+
 
 def ReplaceValuesInDict(listparam):
     Code1 = listparam.replace('"', '')
@@ -77,6 +71,7 @@ def ReplaceValuesInDict(listparam):
     Code4 = Code3.replace(']', '')
     Code5 = Code4.replace(' ', '')
     return Code5
+
 
 def UpdateNewValuesDictKey(a):
     counter = 0
@@ -88,10 +83,12 @@ def UpdateNewValuesDictKey(a):
             newValues += idex + ','
         counter += 1
     return newValues
+
+
 def ActivateCamera():
     # getFromScan = 'Kitkat:P4:8/11/2018:3'
     # add new/remove product
-    getFromScan = 'Coke:P4:8/10/2018:3'
+    getFromScan = 'Coke:P4:8/10/2018:75'
 
     splitString = getFromScan.split(":")
     checkProductName = splitString[0]
@@ -99,7 +96,8 @@ def ActivateCamera():
     checkExpirydate = splitString[2]
     itemCode = splitString[3]
     # data = {"name": getFromScan}
-    data = {'price': 30 , 'Code': splitString[3], 'name': splitString[0], 'expiryDate': splitString[2], 'Checkin': str(datetime.now())}
+    data = {'price': 30, 'Code': splitString[3], 'name': splitString[0], 'expiryDate': splitString[2],
+            'Checkin': str(datetime.now())}
     checkDuplicate = False
     counterOuter = 0
     """"""
@@ -144,16 +142,13 @@ def ActivateCamera():
                                                    'expiryDate': checkExpirydate,
                                                    'Checkin': list_of_Checkin[counterInner],
                                                    'Checkout': str(datetime.now()),
-                                                   'Province' : 'Chiang Mai'}
+                                                   'Province': CustomerAddress}
                             # add to usage database
                             usageItem = firebase.ref('Usage')
                             usageItem.push(checkoutData)
 
                             itemlist.pop(counterOuter)
                             itemlist_key.pop(counterOuter)
-
-
-
 
                             print ("Successful for removing item" + getFromScan)
                             microgear.chat("outdoor/temp", json.dumps(itemlist))
@@ -182,9 +177,10 @@ def ActivateCamera():
 
                             # create new data
                             checkoutData = data = {'price': 30, 'Code': itemCode, 'name': checkProductName,
-                                                   'expiryDate': checkExpirydate, 'Checkin': list_of_Checkin[counterInner],
+                                                   'expiryDate': checkExpirydate,
+                                                   'Checkin': list_of_Checkin[counterInner],
                                                    'Checkout': str(datetime.now()),
-                                                   'Province' : 'Chiang Mai'}
+                                                   'Province': CustomerAddress}
                             # update check in
                             list_of_Checkin.pop(counterInner)
                             updateCheckinValues = ReplaceValuesInDict(json.dumps(list_of_Checkin))
@@ -271,7 +267,7 @@ def ActivateCamera():
 
         microgear.chat("outdoor/temp", json.dumps(itemlist))
         time.sleep(5)
-        
+
 
 def connection():
     logging.info("Now I am connected with netpie")
@@ -293,11 +289,9 @@ if __name__ == "__main__":
     microgear.subscribe("/mails")
     microgear.connect(False)
 
-    
     if (microgear.connected):
-        itemlist, itemlist_key = RetreiveData()
+        itemlist, itemlist_key, CustomerAddress = RetreiveData()
         microgear.chat("outdoor/temp", json.dumps(itemlist))
         while True:
-            print 'welcome to while loop'
             ActivateCamera()
-            time.sleep(5)
+            

@@ -20,33 +20,49 @@ microgear.create(gearkey, gearsecret, appid, {'debugmode': True})
 # setup
 # Create a Firebase reference
 ref = firebase.ref('CustomerInfo')
+ref1 = firebase.ref('CustomerInfo')
 
 itemlist = []
-
 itemlist_key = []
+CustomerAddress = ''
+
 
 # this line for get the data in firebase
 itemRef = ref.child('-KqsdeuVyyatxKELuMs4').child('Item').get()
+InfoRef = ref1.child('-KqsdeuVyyatxKELuMs4').get()
 
 def RetreiveData():
 
     # Get the contents from the reference
 
-    # itemRef = ref.child('-KqsdeuVyyatxKELuMs4').child('Item').get()
-    """"""
-    # add only values inside itemlist
     a = []
     b = []
-    # [a.append(p.values()) for p in itemRef.values()]
+    c = []
+    CustomerInfo = ''
+    # extract customer info city and province
+    for i in InfoRef.values():
 
+        c.append(i)
+        # 0 = last name
+        # 1 = item list
+        # 2 = province
+        # 3 = first name
+        # 4 = City
+
+    CustomerInfo = c[4] + ',' + c[2]
+    print CustomerInfo
     for i in itemRef.values():
-       
+        # arrayString = i.split(",")
+        # print json.dumps(i)
+        # a.append(json.dumps(i))
         a.append(i)
-       
+
+
+    # add only keys inside itemlist_key
     [b.append(p) for p in itemRef.keys()]
 
-   
-    return a, b
+
+    return a, b, CustomerInfo
 
 def CreateArrayOfKeyDict(dictparam):
 
@@ -305,7 +321,7 @@ if __name__ == "__main__":
     microgear.connect(False)
 
     if (microgear.connected):
-        itemlist, itemlist_key = RetreiveData()
+        itemlist, itemlist_key, CustomerAddress = RetreiveData()
         microgear.chat("outdoor/temp", json.dumps(itemlist))
         
         while True:
