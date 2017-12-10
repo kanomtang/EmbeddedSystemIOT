@@ -1,5 +1,4 @@
-#import FinalFBnoCam
-import FinalProgressWithCam
+import FinalFBnoCam
 import unittest
 class MyTestCase(unittest.TestCase):
 
@@ -10,24 +9,24 @@ class MyTestCase(unittest.TestCase):
         self.assertEqual(itemlist_key[0],'-KzyX5tD07R7qv87dEdS')
         self.assertEqual(itemlist[0]['price'],30)
     def testCreatArrayKey(self):
-        rawString = '"Test1,Test2"'
+        rawString = '"6,17"'
 
         actualResult = FinalFBnoCam.CreateArrayOfKeyDict(rawString)
 
-        self.assertEqual(actualResult[0],'Test1')
-        self.assertEqual(actualResult[1],'Test2')
+        self.assertEqual(actualResult[0],'6')
+        self.assertEqual(actualResult[1],'17')
 
     def testReplaceValues(self):
-        rawString = '/] Hello ['
+        rawString = '/"6","17"'
         actualResult = FinalFBnoCam.ReplaceValuesInDict(rawString)
-        rawString1 = '[]/ M[ e ]t h/ od'
+        rawString1 = '"17"'
         actualResult1 = FinalFBnoCam.ReplaceValuesInDict(rawString1)
-        self.assertEqual(actualResult,'Hello')
-        self.assertEqual(actualResult1,'Method')
+        self.assertEqual(actualResult,'6'+','+'17')
+        self.assertEqual(actualResult1,'17')
 
     def testUpdate(self):
-        a = ['Hello','World','by','Python']
+        a = ['6','17']
         actualResult = FinalFBnoCam.UpdateNewValuesDictKey(a)
-        self.assertEqual(actualResult,'Hello,World,by,Python')
+        self.assertEqual(actualResult,'6,17')
 if __name__ == '__main__':
     unittest.main()
