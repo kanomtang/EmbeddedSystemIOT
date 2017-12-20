@@ -179,7 +179,7 @@ def ActivateCamera():
                                     print ("Successful for removing item" + getFromScan)
                                     microgear.chat("outdoor/temp", json.dumps(itemlist))
                                     time.sleep(5)
-                                    break
+                                    return True
                                 # 5.2 array of Code is greater than 1
                                 else:
                                     # delete item code from dict and update
@@ -223,7 +223,7 @@ def ActivateCamera():
 
                                     microgear.chat("outdoor/temp", json.dumps(itemlist))
                                     time.sleep(5)
-                                    break
+                                    return True
                             counterInner += 1
                         # 4.2 itemCode(itemID) is not duplicate
                         else:
@@ -256,7 +256,7 @@ def ActivateCamera():
 
                             microgear.chat("outdoor/temp", json.dumps(itemlist))
                             time.sleep(5)
-                            break
+                            return True
 
 
                     # 3.2 expiry date is not duplicate
@@ -273,7 +273,7 @@ def ActivateCamera():
 
                         microgear.chat("outdoor/temp", json.dumps(itemlist))
                         time.sleep(5)
-                        break
+                        return True
                 counterOuter += 1
 
             # 1.2 if checkDuplicate == false it will add the new one
@@ -291,7 +291,7 @@ def ActivateCamera():
 
                 microgear.chat("outdoor/temp", json.dumps(itemlist))
                 time.sleep(5)
-                
+                return True
 
         #cv.ShowImage("ISR Scanner", img)
 
