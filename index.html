@@ -1,0 +1,116 @@
+<script src="https://cdn.netpie.io/microgear.js"></script>
+<!DOCTYPE html>
+<html>
+<head>
+  <title></title>
+  <style>
+    body {
+      background-color: #303030;
+    }
+    .container {
+      width: 80%;
+      display: flex;
+      border-radius: 5px;
+      background-color: #f9f9f9;
+      margin: 0 auto;
+    }
+    .data-table {
+      width: 100%;
+      border-spacing: 0;
+    }
+    .data-table td{
+      padding-left: 20px;
+    }
+    .data-table td:first-child{
+      border-right: 1px solid #a9a9a9;
+    }
+    .data-table td:last-child{
+      border-left: 1px solid #a9a9a9;
+    }
+    .data-table_header {
+      background-color: #00bcd4;
+      color: white;
+      border-bottom: 1px solid #04a7bc;
+    }
+    .data-table_header th{
+      font-family: sans-serif;
+    }
+    .data-table_header th:first-child{
+      border-top-left-radius: 5px;
+      padding-left: 20px;
+    }
+    .data-table_header th:last-child{
+      border-top-right-radius: 5px;
+      padding-right: 20px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <table class="data-table">
+      <tr class="data-table_header">
+        <th>Name</th>
+        <th>Expiry Date &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</th>
+        <th>Code</th>
+      </tr>
+      <tr id='data'>
+        
+      </tr>
+    </table>
+  </div>
+
+  <script>
+  const APPID = "SmartFridge";
+const APPKEY = "YpZmMdcaemYKQLb";
+const APPSECRET = "I10EsM0ZTaI4PbDVHAWm3j96G";
+var microgear = Microgear.create({
+  key: APPKEY,
+  secret: APPSECRET,
+  alias: "myhtml" /* optional */
+});
+microgear.on("message", function(topic, msg) {
+  old = msg.replace(/\//g, "-");
+  result1 = JSON.parse(old);
+  result = result1.sort(function(a, b) {
+    return a.expiryDate > b.expiryDate;
+    //return new Date("%02d-%02d-%d" % (a.expiryDate)) > new Date("%02d-%02d-%d" % (b.expiryDate)) ;
+  });
+  console.log(result);
+  var html = "";
+  //html += "<table>";
+  for (var i = 0; i < result.length; i++) {
+    console.log(i);
+    html +=
+      //"<tr>" +
+      "<td>" +
+      result[i].name +
+      "</td>" +
+      "<td>" +
+      result[i].expiryDate +
+      "</td>" +
+      "<td>" +
+      result[i].Code +
+      "</td>" 
+      //"</tr>";
+  }
+  //html += "</table>";
+  document.getElementById("data").innerHTML = html;
+});
+microgear.on("connected", function() {
+  microgear.setAlias(
+    "htmlgear"
+  ); /* alias can be renamed anytime with this function */
+  document.getElementById("data").innerHTML =
+    "Now I am connected with netpie...";
+  microgear.subscribe("/gearname/outdoor/temp");
+});
+microgear.on("present", function(event) {
+  console.log(event);
+});
+microgear.on("absent", function(event) {
+  console.log(event);
+});
+microgear.connect(APPID);
+</script>
+</body>
+</html>
