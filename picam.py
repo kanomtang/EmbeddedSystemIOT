@@ -4,16 +4,18 @@ import picamera
 from PIL import Image
 import zbar
 
-while True:
+
 	# Create the in-memory stream
-	stream = io.BytesIO()
-	with picamera.PiCamera() as camera:
-	    camera.start_preview()
-	    time.sleep(2)
-	    camera.capture(stream, format='jpeg')
+stream = io.BytesIO()
+with picamera.PiCamera() as camera:
+	camera.start_preview()
+	time.sleep(2)
+	camera.capture(stream, format='jpeg')
 	# "Rewind" the stream to the beginning so we can read its content
-	stream.seek(0)
-	pil = Image.open(stream)
+stream.seek(0)
+pil = Image.open(stream)
+while True:
+
 	#
 	#########################################
 	#
