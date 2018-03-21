@@ -79,7 +79,7 @@ def ActivateCamera():
     # reading qr code from image => for item in image
 
     # In for
-    getFromScan = "Coke:P4:8/10/2018:6:8"
+    getFromScan = "Lactasoy:P4:18/2/2017:1"
     # split string
     splitString = getFromScan.split(":")
     # setting data
@@ -133,7 +133,8 @@ def ActivateCamera():
                             itemlist_key.pop(counterOuter)
 
                             print ("Successful for removing item" + getFromScan)
-                            break
+                            time.sleep(10)
+                            return True
                         # 4.2 len > 1
                         else:
                             print "len > 1 "
@@ -170,12 +171,13 @@ def ActivateCamera():
                             # usageItem.push(checkoutData)
 
                             print ("Successful for removing item Code")
-
-                            break
+                            time.sleep(10)
+                            return True
                     counterInner += 1
                 # 3.2 not duplicate code
                 if codeDuplicate == False:
                     print "not duplicate code"
+                    print "sucessful for adding new item code"
                     removeItemKey = itemlist_key[counterOuter]
 
                     # update item code
@@ -199,7 +201,8 @@ def ActivateCamera():
                     # forupdateNewCheckin.child(removeItemKey).child('Checkin').set(newCodeForCheckin)
                     # update local database
                     item['Checkin'] = updateNewValuesDictKey(list_of_Checkin)
-                    break
+                    time.sleep(10)
+                    return True
             else:
                 print "not duplicate date"
                 # foraddnewDate = firebase.ref('CustomerInfo/-KqsdeuVyyatxKELuMs4/Item')
@@ -212,7 +215,8 @@ def ActivateCamera():
                 # itemlist_key.append(pkpk)
                 itemlist_key.append("just test")
                 print("Successful for adding new date")
-                break
+                time.sleep(10)
+                return True
         counterOuter += 1
 
     if checkDuplicate == False:
@@ -221,12 +225,15 @@ def ActivateCamera():
         #
         # NewItemKey = foraddNewitemRef.push(data)
 
-        abcd = json.dumps(NewItemKey.values())
-        pkpk = re.sub('[^a-zA-Z_0-9-]+', '', abcd)
+        # abcd = json.dumps(NewItemKey.values())
+        # pkpk = re.sub('[^a-zA-Z_0-9-]+', '', abcd)
         itemlist.append(data)
-        itemlist_key.append(pkpk)
+        # itemlist_key.append(pkpk)
+        itemlist_key.append("just test")
         print("Successful for adding new item")
-    time.sleep(10)
+        time.sleep(10)
+
+
 
 
 if __name__ == "__main__":
