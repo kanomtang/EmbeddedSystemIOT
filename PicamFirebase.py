@@ -1,6 +1,8 @@
 import microgear.client as microgear
 import logging
-
+import io
+import picamera
+from PIL import Image
 from pyfirebase import Firebase
 import time
 import json
@@ -17,7 +19,22 @@ ref = firebase.ref('CustomerInfo')
 ref1 = firebase.ref('CustomerInfo')
 itemRef = ref.child('-KqsdeuVyyatxKELuMs4').child('Item').get()
 InfoRef = ref1.child('-KqsdeuVyyatxKELuMs4').get()
+appid = 'SmartFridge'
+gearkey = 'YpZmMdcaemYKQLb'
+gearsecret = 'I10EsM0ZTaI4PbDVHAWm3j96G'
 
+microgear.create(gearkey, gearsecret, appid, {'debugmode': True})
+
+def connection():
+    logging.info("Now I am connected with netpie")
+
+
+def subscription(topic, message):
+    logging.info(topic + " " + message)
+
+
+def disconnect():
+    logging.debug("disconnect is work")
 
 def createArrayOfKeyDict(dictparam):
     cleanString = dictparam.replace('"', '')
@@ -77,7 +94,7 @@ def ActivateCamera():
     # set camera
     stream = io.BytesIO()
     with picamera.PiCamera() as camera:
-        camera.start_preview()
+        camera.start_preview(fullscreen=False,window=(1500,50,480,480))
         time.sleep(2)
         camera.capture(stream, format='jpeg')
     # "Rewind" the stream to the beginning so we can read its content
@@ -114,8 +131,6 @@ def ActivateCamera():
         codeDuplicate = False
         counterOuter = 0
 
-        print itemlist
-        print itemlist_key
         # 1.1 for loop item list
         for item in itemlist:
 
