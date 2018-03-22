@@ -167,7 +167,8 @@ def ActivateCamera():
 
                                 itemlist.pop(counterOuter)
                                 itemlist_key.pop(counterOuter)
-                                time.sleep(10)
+                                microgear.chat("outdoor/temp", json.dumps(itemlist))
+                                time.sleep(5)
                                 return True
                             # 4.2 len > 1
                             else:
@@ -202,7 +203,8 @@ def ActivateCamera():
 
                                 usageItem = firebase.ref('Usage')
                                 usageItem.push(checkoutData)
-                                time.sleep(10)
+                                microgear.chat("outdoor/temp", json.dumps(itemlist))
+                                time.sleep(5)
                                 return True
                         counterInner += 1
                     # 3.2 not duplicate code
@@ -230,7 +232,8 @@ def ActivateCamera():
                         forupdateNewCheckin.child(removeItemKey).child('Checkin').set(newCodeForCheckin)
                         # update local database
                         item['Checkin'] = updateNewValuesDictKey(list_of_Checkin)
-                        time.sleep(10)
+                        microgear.chat("outdoor/temp", json.dumps(itemlist))
+                        time.sleep(5)
                         return True
                 else:
                     foraddnewDate = firebase.ref('CustomerInfo/-KqsdeuVyyatxKELuMs4/Item')
@@ -241,8 +244,8 @@ def ActivateCamera():
                     pkpk = re.sub('[^a-zA-Z_0-9-]+', '', abcd)
                     itemlist.append(data)
                     itemlist_key.append(pkpk)
-
-                    time.sleep(10)
+                    microgear.chat("outdoor/temp", json.dumps(itemlist))
+                    time.sleep(5)
                     return True
             counterOuter += 1
 
@@ -255,7 +258,8 @@ def ActivateCamera():
             pkpk = re.sub('[^a-zA-Z_0-9-]+', '', abcd)
             itemlist.append(data)
             itemlist_key.append(pkpk)
-            time.sleep(10)
+            microgear.chat("outdoor/temp", json.dumps(itemlist))
+            time.sleep(5)
 
 
 if __name__ == "__main__":
